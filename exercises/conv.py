@@ -31,4 +31,19 @@ def conv2d(x, kernel):
     # 5. 提取输入 x 中与当前卷积核对应的区域 (patch)。
     # 6. 计算 patch 和 kernel 的元素乘积之和 (np.sum(patch * kernel))。
     # 7. 将结果存入输出数组 out[i, j]。
-    pass 
+    # 先拿到尺寸
+    x_shape, kernel_shape = x.shape, kernel.shape
+    # 算下输出的形状
+    out_h, out_w = x_shape[0] - kernel_shape[0] + 1, x_shape[1] - kernel_shape[1] + 1
+    # 搞个空矩阵来等填充
+    out = np.zeros((out_h, out_w))
+
+    # 遍历输出矩阵的每一个元素
+    for i in range(out_h):
+        for j in range(out_w):
+            # 提取输入矩阵中与卷积核对应的区域
+            patch  = x[i:i+kernel_shape[0], j:j+kernel_shape[1]]
+            # 计算卷积结果
+            out[i,j] = np.sum(patch * kernel)
+
+    return out
